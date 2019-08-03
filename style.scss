@@ -1,0 +1,70 @@
+body {
+  margin: auto;
+  background-color: #ccc;
+}
+
+$colors: 
+  #ba4d4e     //sector 1 color
+  #1592e8     //sector 2 color
+  #14c187     //sector 3 color
+  #fc7800     //sector 4 color
+  #14c187     //sector 5 color
+  #1592e8     //sector 6 color
+  #ba4d4e     //sector 7 color
+  #1592e8     //sector 8 color
+  #14c187     //sector 9 color
+  #fc7800     //sector 10 color
+  #14c187     //sector 11 color
+  #1592e8;    //sector 12 color
+
+@mixin setColor($n){
+  fill: nth($colors, $n);
+}
+
+@for $i from 1 through 12 {
+  #_#{$i} {
+    @include setColor($i);
+  }
+}
+
+.wheel {
+  margin: 40px auto;
+  width: 50%;
+  height: 50%;
+}
+
+.spinner {
+  transform: translate(50%, 50%);
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-play-state: paused; 
+  animation-name: spin;
+}
+
+.spinner.spinning {
+  animation-play-state: running; 
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// .flap {
+//   transform: translate(50%, 50%);
+//   animation: flap 1s infinite linear;
+// }
+
+// @keyframes flap {
+//   0% { 
+//     transform: scale(1, 1);
+//     stroke-width: 2px;
+//   }
+//   100% { 
+//     transform: scale(1, 0);
+//     stroke-width: 20px;
+//   }
+//  }
