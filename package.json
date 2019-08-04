@@ -5,8 +5,8 @@
   "dependencies": {
     "chromath": "^0.0.7",
     "classnames": "2.2.6",
-    "frisbee": "2.0.5",
     "immer": "1.10.5",
+    "ky": "^0.11.2",
     "prop-types": "^15.6.2",
     "ramda": "0.26.1",
     "react": "16.5.0",

@@ -1,28 +1,38 @@
 import React, { Component } from 'react'
 
-import api from './../api'
+import { getVirtues } from './../api'
 import { sleep } from './../utils'
 
-import Wheel from './Wheel'
+const toVirtue = ({ color, virtues }) => virtues.map(virtue => ({
+  title: virtue.virtue,
+  color,
+  value: 10
+}))
 
-const random = (lower, upper) =>(lower + Math.floor(Math.random() * (upper - lower + 1)))
+const toVirtues = qualities => {
+  const x = qualities
+    .reduce((acc, quality) => acc.concat(toVirtue(quality)), [])
+    .sort((a, b) => {
+      var nameA = a.title.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.title.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
 
-function shuffle(array, size) {
-  var index = -1,
-      length = array.length,
-      lastIndex = length - 1;
+      // names must be equal
+      return 0;
+    })
 
-  size = size === undefined ? length : size;
-  while (++index < size) {
-    var rand = random(index, lastIndex),
-        value = array[rand];
+  console.log(x)
 
-    array[rand] = array[index];
-    array[index] = value;
-  }
-  array.length = size;
-  return array;
+  x.length = 5
+  return x
 }
+
+import Wheel from './Wheel'
 
 export default class App extends Component {
   constructor(props) {
@@ -35,7 +45,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    api().then(virtues => this.setState({ virtues: shuffle(virtues) }))
+    getVirtues().then(qualities => this.setState({ virtues: toVirtues(qualities) }))
   }
 
   spin = () => {

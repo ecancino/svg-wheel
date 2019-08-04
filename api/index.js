@@ -1,41 +1,13 @@
-import Frisbee from 'frisbee'
-import { prop, map, flatten } from 'ramda'
-import { tint } from 'chromath'
+import ky from 'ky';
 
-import { sampleSize, rand } from './../utils'
+const BIN_ID = '5c78481544e81057efdb694e';
+const BIN_VERSION = 'latest';
 
-const identifier = '5c40d61705d34b26f20c67a5'
+const BIN_ID = '5c78481544e81057efdb694e';
+const BIN_VERSION = 'latest';
+const JSON_BIN = `https://api.jsonbin.io/b/${BIN_ID}/${BIN_VERSION}`;
+const secretKey = '$2a$10$VO8CrFCmMSbXY97S.OZBROF0oUK5JzMOqsLsYhNrQx1CA3CxyYgoW';
 
-const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Accept': 'application/json',
-  'Cache-Control': 'no-cache',
-  'Content-Type': 'application/json',
-}
+export const api = ky.create({ prefixUrl: JSON_BIN });
 
-export const frisbee = new Frisbee({
-  baseURI: `https://api.jsonbin.io/b/${identifier}`,
-  headers,
-  mode: 'no-cors',
-  responseType: 'json',
-  responseEncoding: 'utf8',
-  withCredentials: true,
-  credentials: 'same-origin',
-});
-
-// const prep = map(({ quality, color, virtues }) => ({ title: quality, color, value: 1 }))
-
-
-const choose = map(({ quality, color, virtues }) => 
-  sampleSize(virtues, 2).map(
-    virtue => ({ title: virtue, quality, color, value: 1 })
-  )
-)
-
-const request = version => frisbee.get(`/${version}`).then(prop('body')).then(choose).then(flatten)
-  .then(s => {
-    console.dir(s)
-    return s
-  })
-
-export default () => request(1)
+export const getVirtues = () => api.get('', { secretKey }).json()
